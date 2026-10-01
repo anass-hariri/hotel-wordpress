@@ -1,0 +1,15 @@
+@"
+# Secrets : ne jamais publier
+wp-config.php
+
+# Fichiers temporaires et caches
+wp-content/cache/
+wp-content/upgrade/
+wp-content/ai1wm-backups/
+wp-content/uploads/simply-static/
+*.log
+*.zip
+*.wpress
+Thumbs.db
+.DS_Store
+"@ | Out-File -Encoding utf8 .gitignore
