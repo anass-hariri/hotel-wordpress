@@ -16,8 +16,8 @@ add_shortcode( 'chambres_suites', 'hr_listing_shortcode' );
  */
 function hr_default_texts() {
 	return array(
-		'title' => 'Vue magique, vie *idyllique*',
-		'intro' => 'Les 111 chambres et suites de l’Hôtel du Cap-Eden-Roc sont situées sur trois sites différents : l’Hôtel du Cap, correspondant au bâtiment historique, le pavillon Eden-Roc, surplombant la mer Méditerranée, et la discrète et intime résidence Les Deux Fontaines.',
+		'title' => 'Le vent dans les pins, l’océan *à l’infini*',
+		'intro' => 'Les 27 chambres et 6 suites du Ti al Lannec, toutes uniques, s’ouvrent sur la mer ou sur le parc verdoyant de l’hôtel, à Trébeurden, au cœur de la Côte de Granit Rose. Des tissus fleuris aux velours chatoyants, chaque détail respire le bon goût : coin salon, petit bureau et table pour savourer votre petit-déjeuner.',
 	);
 }
 

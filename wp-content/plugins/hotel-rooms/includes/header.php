@@ -26,19 +26,20 @@ add_action( 'after_setup_theme', function () {
 function hr_default_menu() {
 	return array(
 		'main'      => array(
-			array( 'title' => 'L’Hôtel', 'children' => array( 'Loisirs', 'Famille', 'Destination', 'Histoire', 'Durabilité' ) ),
+			array( 'title' => 'L’Hôtel', 'children' => array( 'Présentation', 'Services', 'Bar et salons', 'Histoire' ) ),
 			array( 'title' => 'Chambres & Suites', 'listing' => true ),
-			array( 'title' => 'Villas' ),
-			array( 'title' => 'Restaurants & Bars', 'children' => array( 'Restaurant Eden-Roc', 'Le Grill', 'Louroc Restaurant', 'Giovanni’s', 'Bar Bellini', 'Juice & Ice Cream Bar', 'Bar Piscine', 'Le Bar du Grill', 'La Rotonde', 'Eden-Roc Lounge' ) ),
-			array( 'title' => 'Bien-être' ),
-			array( 'title' => 'Événements', 'children' => array( 'Mariages', 'Événements privés', 'Événements d’entreprise', 'Salons de réception' ) ),
+			array( 'title' => 'Séjour', 'children' => array( 'Accueil enfants', 'Offres spéciales' ) ),
+			array( 'title' => 'Restaurants & Bar', 'children' => array( 'Restaurant', '« Ti » Lounge', 'Bar' ) ),
+			array( 'title' => 'Spa Thalgo', 'children' => array( 'Spa L’Espace Bleu Marine', 'Bien-être & Fitness', 'Boutique et cadeaux', 'Le Spa en images' ) ),
+			array( 'title' => 'Loisirs', 'children' => array( 'Piscine panoramique', 'Jardins & terrasses', 'Activités', 'Environs' ) ),
+			array( 'title' => 'Événements', 'children' => array( 'Réunions & séminaires' ) ),
 			array( 'title' => 'Galerie' ),
 		),
-		'secondary' => array( 'Boutiques', 'Plan', 'Contact', 'FAQ' ),
+		'secondary' => array( 'Accès', 'Brochures', 'Tarifs', 'Contact', 'Carrières' ),
 		'language'  => 'FR',
 		'band'      => array(
-			'title' => 'Oetker Hotels',
-			'text'  => 'Explorez nos hôtels et villas d’exception',
+			'title' => 'Coffrets cadeaux',
+			'text'  => 'Offrez un séjour, un dîner ou un soin au spa',
 			'url'   => '',
 		),
 	);
@@ -222,8 +223,8 @@ add_action( 'wp_body_open', function () {
 		return;
 	}
 	// Nom et sous-titre : Réglages en priorité, sinon les valeurs par défaut ci-dessous.
-	$title    = trim( (string) hr_get_setting( 'header_title' ) ) ?: 'Hotel du Cap-Eden-Roc';
-	$subtitle = trim( (string) hr_get_setting( 'header_subtitle' ) ) ?: 'Cap d’Antibes';
+	$title    = trim( (string) hr_get_setting( 'header_title' ) ) ?: 'Ti al Lannec';
+	$subtitle = trim( (string) hr_get_setting( 'header_subtitle' ) ) ?: 'Trébeurden · Côte de Granit Rose';
 	?>
 	<header class="hr-header" role="banner">
 		<div class="hr-header__inner">

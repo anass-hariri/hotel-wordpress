@@ -84,12 +84,12 @@ function hr_render_settings_page() {
 				</tr>
 				<tr>
 					<th scope="row"><label for="hr_header_title"><?php esc_html_e( 'Nom affiché', 'hotel-rooms' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="hr_header_title" name="hr_settings[header_title]" value="<?php echo esc_attr( hr_get_setting( 'header_title' ) ); ?>" placeholder="Hotel du Cap-Eden-Roc">
-						<p class="description"><?php esc_html_e( 'Vide = « Hotel du Cap-Eden-Roc ».', 'hotel-rooms' ); ?></p></td>
+					<td><input type="text" class="regular-text" id="hr_header_title" name="hr_settings[header_title]" value="<?php echo esc_attr( hr_get_setting( 'header_title' ) ); ?>" placeholder="Ti al Lannec">
+						<p class="description"><?php esc_html_e( 'Vide = « Ti al Lannec ».', 'hotel-rooms' ); ?></p></td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="hr_header_subtitle"><?php esc_html_e( 'Sous-titre', 'hotel-rooms' ); ?></label></th>
-					<td><input type="text" class="regular-text" id="hr_header_subtitle" name="hr_settings[header_subtitle]" value="<?php echo esc_attr( hr_get_setting( 'header_subtitle' ) ); ?>" placeholder="Cap d’Antibes">
+					<td><input type="text" class="regular-text" id="hr_header_subtitle" name="hr_settings[header_subtitle]" value="<?php echo esc_attr( hr_get_setting( 'header_subtitle' ) ); ?>" placeholder="Trébeurden · Côte de Granit Rose">
 						<p class="description"><?php printf( esc_html__( 'Liens du menu : %s, emplacement « Menu de l’en-tête de l’hôtel ». Sans menu, les pages du site sont listées.', 'hotel-rooms' ), '<a href="' . esc_url( admin_url( 'nav-menus.php' ) ) . '">' . esc_html__( 'Apparence > Menus', 'hotel-rooms' ) . '</a>' ); ?></p></td>
 				</tr>
 			</table>

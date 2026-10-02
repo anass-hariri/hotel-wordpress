@@ -15,30 +15,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 function hr_default_footer() {
 	return array(
 		'hotel'    => array(
-			'title'   => 'Hotel du Cap-Eden-Roc',
-			'address' => '167-165 Boulevard J. F. Kennedy, CS 10029, 06605 Antibes Cedex, France',
-			'phone'   => '+33 (0)4 93 61 39 01',
-			'map_url' => 'https://maps.google.com/maps?q=43.54799,7.121468',
+			'title'   => 'Ti al Lannec Hôtel, Restaurant & Spa',
+			'address' => '14, allée de Mezo Guen, 22560 Trébeurden, France',
+			'phone'   => '+33 (0)2 96 15 01 01',
+			'map_url' => 'https://maps.google.com/maps?q=48.7691592,-3.5794508',
 			'map'     => 'Ouvrir la carte',
 		),
 		'booking'  => array(
 			'title'   => 'Réservation d’un séjour',
-			'email'   => 'reservations.hdcer@oetkerhotels.com',
-			'phone'   => '+33 (0)4 92 93 32 00',
+			'email'   => 'contact@tiallannec.com',
+			'phone'   => '+33 (0)2 96 15 01 01',
 			'contact' => 'Nous contacter', // Lien vers la page WordPress « Contact » si elle existe.
 		),
 		// Réseaux sociaux : laissez l'adresse vide pour masquer un réseau.
 		'social'   => array(
-			'TikTok'    => 'https://www.tiktok.com/',
-			'Instagram' => 'https://www.instagram.com/',
-			'YouTube'   => 'https://www.youtube.com/',
-			'Facebook'  => 'https://www.facebook.com/',
-			'LinkedIn'  => 'https://www.linkedin.com/',
+			'TikTok'    => '',
+			'Instagram' => 'https://www.instagram.com/ti_al_lannec_hotel_trebeurden/',
+			'YouTube'   => '',
+			'Facebook'  => 'https://www.facebook.com/TI.AL.LANNEC.Hotel/',
+			'LinkedIn'  => '',
 			'WeChat'    => '', // ex. lien de votre compte officiel
 			'Weibo'     => '', // ex. https://weibo.com/votrecompte
 		),
-		'brand'    => 'Oetker Hotels',
-		'tagline'  => 'Masterpiece Collection',
+		'brand'    => 'Ti al Lannec',
+		'tagline'  => 'Hôtel ★★★★ · Restaurant & Spa · Ouvert d’avril à octobre',
 	);
 }
 

@@ -18,63 +18,64 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 WP_CLI::add_command( 'hotel-rooms seed', function ( $args, $assoc ) {
-	$images = isset( $assoc['images'] ) ? hr_sanitize_id_list( $assoc['images'] ) : array();
+	$images = hr_sanitize_id_list( isset( $assoc['images'] ) ? $assoc['images'] : array() );
+	$count  = 0;
 
-	// Bâtiments de l'hôtel.
+	// Bâtiment(s) de l'hôtel.
 	$sites = array();
-	foreach ( array( 'Hôtel du Cap', 'Pavillon Eden-Roc', 'Les Deux Fontaines' ) as $name ) {
+	foreach ( array( 'Ti al Lannec' ) as $name ) {
 		$term           = term_exists( $name, 'batiment' ) ?: wp_insert_term( $name, 'batiment' );
 		$sites[ $name ] = is_array( $term ) ? (int) $term['term_id'] : (int) $term;
 	}
 
-	// Équipements affichés dans « À propos de cette chambre » (modifiables ici ou chambre par chambre dans l'administration).
-	$common = array( 'Climatisation', 'Internet sans fil', 'Baignoire et douche séparées', 'Non-fumeur', 'Chambres communicantes (disponible sur demande)' );
+	// Équipements affichés dans « À propos de cette chambre » (communs à toutes les chambres du Ti al Lannec).
+	$common = array(
+		'Accès Internet WiFi gratuit',
+		'Téléphone',
+		'Bouilloire électrique',
+		'Coffre-fort',
+		'Minibar',
+		'Téléviseur avec chaînes satellites',
+		'Peignoirs et pantoufles',
+		'Sèche-cheveux',
+		'Serviettes et tongs pour la piscine',
+		'Table et fer à repasser (sur demande)',
+	);
 
 	/*
-	 * Les 8 hébergements, dans l'ordre d'affichage.
+	 * Les 9 hébergements, dans l'ordre d'affichage.
 	 * Le titre doit être identique au nom du dossier dans photos/ pour que les photos s'y rattachent.
 	 * Colonnes : titre, catégorie, bâtiment, code, personnes, surface min, surface max (0 = unique), vue, literie, extrait.
+	 * Valeur vide ('' ou 0) = non affichée sur le site.
 	 * Description détaillée (fiche « Découvrir ») : tableau $details plus bas, un paragraphe par ligne.
 	 */
 	$rooms = array(
-		array( 'Chambre Tradition, Deux Fontaines', 'chambres', 'Les Deux Fontaines', 'TRAF', 2, 32, 0, 'Vue sur cour intérieure', 'Lit King size', 'Pure invitation à la détente, les Chambres Tradition sont idéalement situées au sein de la résidence Les Deux Fontaines.' ),
-		array( 'Chambre Classique, Deux Fontaines', 'chambres', 'Les Deux Fontaines', 'CLAF', 3, 32, 39, 'Vue sur cour intérieure', 'Lit King size ou lits jumeaux', 'D’une superficie de 25 mètres carrés, les Chambres Classiques Deux Fontaines allient confort et élégance contemporaine.' ),
-		array( 'Chambre Classique', 'chambres', 'Hôtel du Cap', 'CLA', 2, 25, 30, 'Vue jardin', 'Lit King size ou lits jumeaux', 'Comme une invitation à la détente, les Chambres Classiques s’ouvrent vers le parc de l’hôtel.' ),
-		array( 'Chambre Supérieure', 'chambres', 'Hôtel du Cap', 'SUP', 3, 35, 0, 'Vue jardin', 'Lit King size', 'Situées au sein du bâtiment historique de l’Hôtel du Cap, les Chambres Supérieures sont ponctuées de détails raffinés.' ),
-		array( 'Junior Suite', 'suites', 'Hôtel du Cap', 'JSU', 3, 45, 50, 'Vue jardin', 'Lit King size', 'Fraîchement rénovées et s’étendant sur 40 à 50 m², les Junior Suites séduisent par leur confort et leurs vues imprenables sur le parc depuis le bâtiment historique de l’Hôtel du Cap.' ),
-		array( 'Junior Suite Deluxe', 'suites', 'Hôtel du Cap', 'JSDX', 3, 45, 55, 'Vue parc ou mer à distance', 'Lit King size', 'Spacieuses et raffinées, les Junior Suites Deluxe offrent des vues imprenables depuis le bâtiment historique de l’Hôtel du Cap. Certaines sont dotées d’une charmante terrasse ensoleillée.' ),
-		array( 'Junior Suite Eden Roc', 'suites', 'Pavillon Eden-Roc', 'ER', 3, 49, 0, 'Vue mer', 'Lit King size', 'Disposant d’une terrasse face à la mer, les Junior Suites Eden-Roc se dévoilent à travers un mariage de confort moderne et de raffinement.' ),
-		array( 'Suite', 'suites', 'Hôtel du Cap', '1BSS', 3, 50, 0, 'Vue jardin', 'Lit King size', 'Fraîchement rénovées, les Suites une Chambre sont situées dans le bâtiment historique de l’Hôtel du Cap.' ),
+		array( 'Chambre Standard', 'chambres', 'Ti al Lannec', 'STD', 2, 24, 30, 'Côté jardin', 'Lit Queen size ou lits jumeaux', 'Situées côté jardin, nos quatre chambres Standard de 24 à 30 m² offrent tout le confort du Ti al Lannec dans une atmosphère paisible.' ),
+		array( 'Chambre Tradition', 'chambres', 'Ti al Lannec', 'TRA', 2, 29, 35, 'Côté jardin', 'Lit Queen size ou lits jumeaux', 'Côté jardin, nos cinq chambres Tradition de 29 à 35 m² offrent un cadre chaleureux, avec coin salon et petit bureau.' ),
+		array( 'Chambre Classique', 'chambres', 'Ti al Lannec', 'CLA', 2, 23, 34, 'Vue mer ou latérale, balcon', 'Lit Queen size ou lits jumeaux', 'Avec vue sur la mer et balcon ou balcon Juliette, les chambres Classiques existent aussi en version individuelle.' ),
+		array( 'Chambre Supérieure', 'chambres', 'Ti al Lannec', 'SUP', 2, 24, 37, 'Vue mer, balcon', 'Lit Queen size ou lits jumeaux', 'Face à la mer, avec balcon ou balcon Juliette, nos huit chambres Supérieures marient tissus fleuris et velours chatoyants.' ),
+		array( 'Chambre Terrasse', 'chambres', 'Ti al Lannec', 'TER', 2, 31, 40, 'Vue mer, plein sud', 'Lit Queen size ou lits jumeaux', 'Orientées au sud face à la mer, les chambres Terrasse de 31 à 40 m² se prolongent par une large terrasse.' ),
+		array( 'Suite Tradition', 'suites', 'Ti al Lannec', 'STRA', 3, 29, 36, 'Côté jardin', '', 'Situées côté jardin, les deux suites Tradition (29 et 36 m²) sont spécialement pensées pour l’accueil des familles.' ),
+		array( 'Suite Supérieure', 'suites', 'Ti al Lannec', 'SSUP', 3, 45, 0, 'Vue mer, coucher de soleil', '', 'Orientée à l’ouest, la suite Supérieure de 45 m² est idéale pour admirer le coucher de soleil sur la mer et les îles.' ),
+		array( 'Suite Terrasse', 'suites', 'Ti al Lannec', 'STER', 3, 45, 48, 'Vue mer, plein sud', '', 'Face à la mer côté sud, les deux suites Terrasse de 45 et 48 m² disposent d’une très belle terrasse.' ),
+		array( 'Suite Aristide', 'suites', 'Ti al Lannec', 'ARI', 3, 59, 0, 'Vue panoramique sur la mer', '', 'Orientée au sud, la suite Aristide offre 59 m² avec vue panoramique sur la mer et les îles, et une vaste terrasse.' ),
 	);
 
 	// Descriptions détaillées affichées sur la fiche (bouton « Découvrir »). Un paragraphe par ligne.
+	// Sources : tiallannec.com (pages de chaque catégorie et Tarifs 2026).
+	$equip   = 'Chaque chambre dispose d’un accès Internet WiFi gratuit, d’un téléphone, d’une bouilloire électrique, d’un coffre-fort, d’un minibar et d’un téléviseur avec chaînes satellites. Peignoirs et pantoufles, sèche-cheveux, serviettes et tongs pour la piscine sont à votre disposition ; table et fer à repasser sur demande.';
+	$extra   = 'Lit supplémentaire et berceau sur demande. Animaux de compagnie acceptés (avec supplément). Petit-déjeuner continental ou buffet en supplément.';
+	$famille = 'Séjournez avec vos enfants dans nos suites spécialement pensées pour l’accueil des familles, et profitez de la piscine et des équipements mis à leur disposition.';
 	$details = array(
-		'Chambre Tradition, Deux Fontaines' => "Ajoutée en 1980 pour offrir aux clients un séjour plus intimiste, la Résidence Les Deux Fontaines s'étend sur deux étages et propose 32 chambres lumineuses et aérées, de tailles variées, avec vue sur la cour tranquille ou le jardin.
-Les chambres Tradition Deux Fontaines, d’une superficie de 32m², reflètent le style classique français, avec un coin salon confortable et un bureau.
-Les salles de bains, revêtues de marbre italien et équipées d’une baignoire ainsi que d’une douche séparée, offrent un généreux assortiment de produits de bain de luxe et incarnent le glamour absolu.
-Des fruits frais et des roses parfumées vous attendent à votre arrivée.",
-		'Chambre Classique, Deux Fontaines' => "Les Deux Fontaines a été ajoutée en 1980 pour offrir aux clients un séjour plus intimiste à l’Hôtel du Cap-Eden-Roc. Les chambres Classique Deux Fontaines, d’une superficie de 25 m², reprennent le style français traditionnel, revisité avec soin pour le XXIᵉ siècle.
-Les chambres Classique Deux Fontaines peuvent accueillir jusqu’à trois personnes et être communicantes avec une chambre séparée, ce qui les rend idéales pour les familles.",
-		'Chambre Classique'                 => "Les chambres Classique sont situées dans ce qui fut à l’origine la Villa Soleil du XIXᵉ siècle, aujourd’hui le bâtiment principal de l’Hôtel du Cap-Eden-Roc.
-D’une superficie de 25 à 30 m², elles sont décorées dans de doux tons de vert et de bleu, en harmonie avec la vue enchanteresse sur le paysage naturel. Le mobilier de style classique français allie élégance et confort, tandis que les salles de bains spacieuses, revêtues de marbre, incarnent le glamour absolu.
-F. Scott Fitzgerald, ancien client, décrivait l’Hôtel du Cap-Eden-Roc comme une « échappatoire au monde entier ». Les chambres Classique, calmes et raffinées, vous invitent à vivre cette même expérience.",
-		'Chambre Supérieure'                => "D’une superficie généreuse de 35 m², les chambres Supérieures bénéficient d’un emplacement privilégié dans le bâtiment historique principal de l’Hôtel du Cap-Eden-Roc, anciennement la Villa Soleil du XIXᵉ siècle.
-Ces chambres uniques débordent de charme Riviera, avec un mobilier coloré et des imprimés contemporains sur fond de tons doux crème, bleu et vert.
-Chaque chambre, spacieuse et confortable, peut accueillir jusqu’à trois personnes",
-		'Junior Suite'                      => "Les lustres scintillants, présents dans la chambre comme dans le salon de chaque Junior Suite, donnent le ton : la Riviera dans toute sa splendeur.
-Situées dans le bâtiment historique principal de l’Hôtel du Cap-Eden-Roc, autrefois Villa Soleil du XIXᵉ siècle, ces suites généreuses de 45 à 50 m² marient mobilier d’époque en acajou poli, estampes anciennes, canapé moderne et tapis contemporains.
-Un grand bureau évoque la génération perdue d’écrivains, tels qu’Ernest Hemingway et F. Scott Fitzgerald, fidèles à l’hôtel.
-Pouvant accueillir jusqu’à trois personnes, les Junior Suites offrent une vue magique sur les jardins.",
-		'Junior Suite Deluxe'               => "L’Hôtel du Cap-Eden-Roc a vu le jour à la fin du XIXᵉ siècle sous le nom de Villa Soleil.
-D’une superficie de 75m² dans le bâtiment principal de l’hôtel, les Suites Deluxe Une Chambre sont une expression fraîche et élégante de l’histoire de l’hôtel.
-Décorées dans des tons pastel doux avec des touches florales et des œuvres d’art originales, ces suites offrent une élégance à grande échelle avec un salon séparé ; certaines disposent également d’un balcon.
-Avec deux salles de bains luxueuses, les Suites Deluxe peuvent accueillir confortablement jusqu’à trois personnes.",
-		'Junior Suite Eden Roc'             => "Perchées au-dessus de la mer, à quelques pas du bâtiment principal, les Eden-Roc Junior Suites sont situées dans le Pavillon Eden-Roc, autrefois un restaurant dont le menu fut illustré par Pablo Picasso. Aujourd’hui, ce lieu emblématique abrite certaines des plus belles suites de l’hôtel, dont les Eden-Roc Junior Suites de 49 m².
-Lumineuses et aérées, elles disposent d’un salon élégant s’ouvrant sur une terrasse privée avec vue envoûtante sur la Méditerranée calme et azurée, jusqu’aux îles de Lérins.
-Pouvant accueillir jusqu’à trois personnes, ces suites sont également disponibles en version communicante pour les séjours en famille.",
-		'Suite'                             => "Occupant 50 m² d’espace magnifiquement conçu, les Suites une chambre disposent d’une grande chambre et d’un salon séparé, mêlant un mobilier Louis XV soigneusement choisi à des pièces modernes.
-De beaux tissus de maisons historiques, des estampes encadrées contemporaines et anciennes, ainsi que des lustres en cristal sont baignés de lumière naturelle, tandis que les fenêtres élégamment habillées offrent une vue envoûtante sur le domaine de l’hôtel.
-Tout est à portée de main : après un délicieux petit-déjeuner au Restaurant Eden-Roc, flânez le long de La Grande Allée jusqu’à la célèbre piscine d’eau salée de l’hôtel, qui inspira le roman de F. Scott Fitzgerald en 1934, Tender is the Night.",
+		'Chambre Standard'   => "Les chambres Standard sont situées côté jardin. Leur surface varie de 24 à 30 m² ; nous proposons quatre chambres de ce type.\n$equip\nTarif : de 255 € à 340 € la nuit pour deux personnes selon la saison (hors taxe de séjour).\n$extra",
+		'Chambre Tradition'  => "Les chambres Tradition sont situées côté jardin. Leur surface varie de 29 à 35 m² ; nous proposons cinq chambres de ce type.\nDes tissus fleuris aux velours chatoyants, elles offrent un coin salon, un petit bureau et une table pour savourer votre petit-déjeuner.\n$equip\nTarif : de 295 € à 380 € la nuit pour deux personnes selon la saison (hors taxe de séjour).\n$extra",
+		'Chambre Classique'  => "Les chambres Classiques offrent une vue sur la mer avec balcon ou balcon Juliette. Côté sud, trois chambres de 23 à 25 m² ; côté est, une chambre de 34 m² avec vue mer latérale.\nElles sont proposées en chambre double ou en chambre individuelle.\n$equip\nTarif : de 320 € à 405 € la nuit pour deux personnes ; de 210 € à 255 € en chambre individuelle, selon la saison (hors taxe de séjour).\n$extra",
+		'Chambre Supérieure' => "Les chambres Supérieures offrent une vue sur la mer avec balcon ou balcon Juliette. Nous en proposons huit : sept côté sud, de 24 à 30 m² (dont une avec terrasse privative), et une côté ouest de 37 m².\n$equip\nTarif : de 380 € à 465 € la nuit pour deux personnes selon la saison (hors taxe de séjour).\n$extra",
+		'Chambre Terrasse'   => "Orientées au sud face à la mer, les chambres Terrasse offrent de 31 à 40 m² de confort intérieur, prolongés par une large terrasse.\n$equip\nTarif : de 430 € à 515 € la nuit pour deux personnes selon la saison (hors taxe de séjour).\n$extra",
+		'Suite Tradition'    => "$famille\nLes suites Tradition sont situées côté jardin. L’une d’entre elles a une superficie de 36 m² et la deuxième de 29 m².\n$equip\nTarif : de 315 € à 470 € la nuit selon la saison (hors taxe de séjour).\n$extra",
+		'Suite Supérieure'   => "$famille\nD’une surface de 45 m² avec balcons Juliette, la suite Supérieure est orientée à l’ouest : elle est idéale pour admirer le coucher de soleil sur la mer et les îles.\n$equip\nTarif : de 395 € à 550 € la nuit selon la saison (hors taxe de séjour).\n$extra",
+		'Suite Terrasse'     => "$famille\nFace à la mer côté sud, les deux suites Terrasse mesurent 45 et 48 m² et disposent d’une très belle terrasse.\n$equip\nTarif : de 465 € à 620 € la nuit selon la saison (hors taxe de séjour).\n$extra",
+		'Suite Aristide'     => "$famille\nLa suite Aristide, orientée au sud, offre 59 m² de confort intérieur avec vue panoramique sur la mer et les îles, ainsi qu’une vaste terrasse.\n$equip\nTarif : de 560 € à 690 € la nuit selon la saison (hors taxe de séjour).\n$extra",
 	);
 
 	$per = $images ? max( 1, (int) floor( count( $images ) / 2 ) ) : 0;
@@ -106,7 +107,7 @@ Tout est à portée de main : après un délicieux petit-déjeuner au Restaurant
 			), true );
 
 			if ( is_wp_error( $id ) ) {
-				WP_CLI::warning( $id->get_error_message() );
+				WP_CLI::log( 'Erreur : ' . $id->get_error_message() );
 				continue;
 			}
 			$label = 'Créé';
@@ -136,6 +137,7 @@ Tout est à portée de main : après un délicieux petit-déjeuner au Restaurant
 		}
 
 		WP_CLI::log( "$label : $title (#$id)" );
+		$count++;
 	}
 
 	$page = get_page_by_path( 'chambres-et-suites' );
@@ -154,7 +156,7 @@ Tout est à portée de main : après un délicieux petit-déjeuner au Restaurant
 	}
 
 	flush_rewrite_rules();
-	WP_CLI::success( 'Hébergements prêts. Lancez ensuite « wp hotel-rooms photos » pour les photos.' );
+	WP_CLI::success( sprintf( '%d hébergement(s) prêt(s). Lancez ensuite « wp hotel-rooms photos » pour les photos.', $count ) );
 } );
 
 /**
